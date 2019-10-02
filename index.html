@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://mtsgi.github.io/kitstrap/d/kitstrap.css">
+    <link rel="stylesheet" href="https://mtsgi.github.io/kitstrap/d/kitstrap-font.css">
+    <title>Instant RegExp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <header class="kit-header kit-font-large kit-text-medium kit-text-c p">Instant RegExp</header>
+    <div id="app">
+        <div class="row m-l">
+            <div class="input-field col s12 m6">
+                <input type="text" v-model="pattern">
+                <label for="last_name">Pattern(RegExp)</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input type="text" v-model="str">
+                <label for="last_name">Target String</label>
+            </div>
+        </div>
+        <div class="m-l">
+            <ul class="collection m-l">
+                <li class="collection-item" v-for="r in result">{{r || "-"}}</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        var app = new Vue( {
+            el: '#app',
+            data: {
+                pattern: '',
+                str: ''
+            },
+            computed: {
+                result: function() {
+                    try {
+                        return this.str.match( new RegExp( this.pattern ) ) || ["結果なし"]
+                    } catch (error) {
+                        return [error]
+                    }
+                }
+            }
+        } );
+    </script>
+</body>
+
+</html>
