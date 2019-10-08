@@ -23,7 +23,7 @@
                 <label for="last_name">Pattern(RegExp)</label>
             </div>
             <div class="input-field col s12 m6">
-                <input type="text" v-model="str">
+                <textarea class="materialize-textarea" v-model="str"></textarea>
                 <label for="last_name">Target String</label>
             </div>
         </div>
@@ -32,21 +32,42 @@
                 <li class="collection-item" v-for="r in result">{{r || "-"}}</li>
             </ul>
         </div>
+        <div class="right-align m-l">
+            <a class="waves-effect waves-light btn" @click="onsave">SAVE</a>
+        </div>
+        <div class="m-l">
+            <ul class="collection m-l">
+                <li class="collection-item" v-for="m in memory">{{m || "-"}}</li>
+            </ul>
+        </div>
     </div>
     <script>
         var app = new Vue( {
             el: '#app',
             data: {
-                pattern: '',
-                str: ''
+                pattern: '^https?:\/\/.*/[^\/]+.html?$',
+                str: '',
+                memory: []
             },
             computed: {
                 result: function() {
                     try {
                         return this.str.match( new RegExp( this.pattern ) ) || ["結果なし"]
-                    } catch (error) {
+                    }
+                    catch( error ) {
                         return [error]
                     }
+                }
+            },
+            created() {
+                if( !localStorage.getItem( 'insregexp' ) ) localStorage.setItem( 'insregexp', "SAVE" );
+                this.memory = localStorage.getItem( 'insregexp' ).split( '／' );
+
+            },
+            methods: {
+                onsave: function() {
+                    localStorage.setItem( 'insregexp', `${this.memory.join('／')}／SPLIT${this.pattern}` );
+                    this.memory = localStorage.getItem( 'insregexp' ).split( '／' );
                 }
             }
         } );
